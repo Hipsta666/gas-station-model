@@ -2,7 +2,7 @@ import random
 
 
 def customer_document(file):
-    with open(file) as file_input:
+    with open(file, encoding="utf8") as file_input:
         table = {}
         for i in file_input:
 
@@ -10,12 +10,11 @@ def customer_document(file):
                 table[i.split(" ")[0]] = [i.split(" ")[1], i.split(" ")[2]]
             else:
                 table[(i.split(" ")[0]) + "+"] = [i.split(" ")[1], i.split(" ")[2]]
-
     return table
 
 
 def gas_document(file):
-    with open(file) as file_azs:
+    with open(file, encoding="utf8") as file_azs:
         info = {}
         for i in file_azs:
 
@@ -38,6 +37,7 @@ def time():
                 s = str(minutes)
             now = h + ":" + s
             times.append(now)
+            print(now)
     return times
 
 
@@ -73,8 +73,11 @@ def refueling_time(data, times):
 """
 
 def gas_station():
+
     customers = customer_document("input.txt")
     station = gas_document("azs.txt")
+    print(customers)
+    print(station)
     for min in time():
         for buyer_time in customers:
             if buyer_time == min:
@@ -86,9 +89,11 @@ def gas_station():
 
 
                         print("В " + buyer_time + " новый клиент: " + buyer_time + " " +
-                              customers[buyer_time][1] + " " + customers[buyer_time][0] + " " +
-                              str(refueling_time(customers, buyer_time)) + " " + " встал в очередь к автомату №" + number)
+                              customers[buyer_time][1] + " " + customers[buyer_time][0] +
+                              " " + str(refueling_time(customers, buyer_time)) + " " +
+                              " встал в очередь к автомату №" + number)
                         presentation_station(station)
+                        break
 
 
 gas_station()
