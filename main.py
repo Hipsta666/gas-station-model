@@ -2,7 +2,7 @@ import random
 
 
 def customer_document(file):
-    with open(file) as file_input:
+    with open(file, encoding="utf8") as file_input:
         table = {}
         for i in file_input:
 
@@ -15,7 +15,7 @@ def customer_document(file):
 
 
 def gas_document(file):
-    with open(file) as file_azs:
+    with open(file, encoding="utf8") as file_azs:
         info = {}
         for i in file_azs:
 
@@ -61,10 +61,21 @@ def refueling_time(data, times):
     return onStation
 
 
-"""
-Функция "отсева" клиентов из-за нехватки мест на заправке.
-
-"""
+def busy(data, num, client, count):
+    """
+    if num == "1" and len(data[num][3]) > int(data[num][1]) - 1:
+        print(client[0:8] + client[14:39] + " не смог заправить машину и уехал с АЗС")
+        presentation_station(data)
+        return 1
+    """
+    if len(data[num][3]) <= int(data[num][1]):
+        data[num][3] += "*"
+        print(client)
+        presentation_station(data)
+    elif len(data[num][3]) > int(data[num][1]):
+        print(111)
+    if count == len(data):
+        print("lox")
 
 
 """
@@ -75,20 +86,33 @@ def refueling_time(data, times):
 def gas_station():
     customers = customer_document("input.txt")
     station = gas_document("azs.txt")
+    print(customers)
+    print(station)
     for min in time():
         for buyer_time in customers:
             if buyer_time == min:
+                n = 0
                 for number in station:
                     if customers[buyer_time][1] in station[number][2]:
 
 
-                        station[number][3] += "*" # временная строка (до функции "отсева")
+
+                        new_customer = "В " + buyer_time + " новый клиент: "\
+                                       + buyer_time + " " + customers[buyer_time][1]\
+                                       + " " + customers[buyer_time][0] + " "\
+                                       + str(refueling_time(customers, buyer_time))\
+                                       + " " + " встал в очередь к автомату №" + number
 
 
-                        print("В " + buyer_time + " новый клиент: " + buyer_time + " " +
-                              customers[buyer_time][1] + " " + customers[buyer_time][0] + " " +
-                              str(refueling_time(customers, buyer_time)) + " " + " встал в очередь к автомату №" + number)
-                        presentation_station(station)
+                        busy(station, number, new_customer, n)
+
+
+
+
+
+
+
+
 
 
 gas_station()
