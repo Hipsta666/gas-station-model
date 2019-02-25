@@ -17,7 +17,6 @@ def gas_document(file):
     with open(file, encoding="utf8") as file_azs:
         info = {}
         for i in file_azs:
-
             info[i.split(" ")[0]] = [i.split(" ")[0], i.split(" ")[1], i.split(" ")[2:], ""]
 
     return info
@@ -37,7 +36,7 @@ def time():
                 s = str(minutes)
             now = h + ":" + s
             times.append(now)
-            print(now)
+
     return times
 
 
@@ -61,10 +60,25 @@ def refueling_time(data, times):
     return onStation
 
 
-"""
-Функция "отсева" клиентов из-за нехватки мест на заправке.
+def busy(data, num, client):
+    """
+    if num == "1" and len(data[num][3]) > int(data[num][1]) - 1:
+        print(client[0:8] + client[14:39] + " не смог заправить машину и уехал с АЗС")
+        presentation_station(data)
+        return 1
+    """
+    if len(data[num][3]) <= int(data[num][1]):
+        data[num][3] += "*"
+        print(client)
+        presentation_station(data)
+    elif len(data[num][3]) > int(data[num][1]):
 
-"""
+        print(client)
+        print(111)
+        presentation_station(data)
+
+    if num == len(data):
+        print("lox")
 
 
 """
@@ -72,28 +86,121 @@ def refueling_time(data, times):
 
 """
 
-def gas_station():
 
+def gas_station():
     customers = customer_document("input.txt")
     station = gas_document("azs.txt")
-    print(customers)
-    print(station)
     for min in time():
         for buyer_time in customers:
             if buyer_time == min:
+
+                if customers[buyer_time][1][:5] in station["1"][2]:
+
+                    if len(station["1"][3]) < int(station["1"][1]):
+                        station["1"][3] += "*"
+                        new_customer = "В " + buyer_time + " новый клиент: " \
+                                       + buyer_time + " " + customers[buyer_time][1][:5] \
+                                       + " " + customers[buyer_time][0] + " " \
+                                       + str(refueling_time(customers, buyer_time)) \
+                                       + " " + " встал в очередь к автомату №" + "1"
+
+                        print(new_customer)
+                        presentation_station(station)
+                    else:
+                        print("Ушёл", "В " + buyer_time + " новый клиент: " \
+                              + buyer_time + " " + customers[buyer_time][1][:5] \
+                              + " " + customers[buyer_time][0] + " " \
+                              + str(refueling_time(customers, buyer_time)) \
+                              + " " + " встал в очередь к автомату №")
+                elif customers[buyer_time][1][:5] in station["2"][2]:
+
+                    if len(station["2"][3]) < int(station["2"][1]):
+                        station["2"][3] += "*"
+                        new_customer = "В " + buyer_time + " новый клиент: " \
+                                       + buyer_time + " " + customers[buyer_time][1][:5] \
+                                       + " " + customers[buyer_time][0] + " " \
+                                       + str(refueling_time(customers, buyer_time)) \
+                                       + " " + " встал в очередь к автомату №" + "2"
+
+                        print(new_customer)
+                        presentation_station(station)
+
+                    elif len(station["2"][3]) >= int(station["2"][1]):
+                        if customers[buyer_time][1][:5] in station["3"][2]:
+
+                            if len(station["3"][3]) < int(station["3"][1]):
+                                station["3"][3] += "*"
+                                new_customer = "В " + buyer_time + " новый клиент: " \
+                                               + buyer_time + " " + customers[buyer_time][1][:5] \
+                                               + " " + customers[buyer_time][0] + " " \
+                                               + str(refueling_time(customers, buyer_time)) \
+                                               + " " + " встал в очередь к автомату №" + "3"
+
+                                print(new_customer)
+                                presentation_station(station)
+                            elif len(station["3"][3]) >= int(station["3"][1]):
+                                print("Ушёл", "В " + buyer_time + " новый клиент: " \
+                                      + buyer_time + " " + customers[buyer_time][1][:5] \
+                                      + " " + customers[buyer_time][0] + " " \
+                                      + str(refueling_time(customers, buyer_time)) \
+                                      + " " + " встал в очередь к автомату №")
+                        else:
+                            print("Ушёл", "В " + buyer_time + " новый клиент: " \
+                                  + buyer_time + " " + customers[buyer_time][1][:5] \
+                                  + " " + customers[buyer_time][0] + " " \
+                                  + str(refueling_time(customers, buyer_time)) \
+                                  + " " + " встал в очередь к автомату №")
+
+
+                elif customers[buyer_time][1][:5] in station["3"][2]:
+
+                    if len(station["3"][3]) < int(station["3"][1]):
+                        station["3"][3] += "*"
+                        new_customer = "В " + buyer_time + " новый клиент: " \
+                                       + buyer_time + " " + customers[buyer_time][1][:5] \
+                                       + " " + customers[buyer_time][0] + " " \
+                                       + str(refueling_time(customers, buyer_time)) \
+                                       + " " + " встал в очередь к автомату №" + "3"
+
+                        print(new_customer)
+                        presentation_station(station)
+                    elif len(station["3"][3]) >= int(station["3"][1]):
+                        print("Ушёл", "В " + buyer_time + " новый клиент: " \
+                              + buyer_time + " " + customers[buyer_time][1][:5] \
+                              + " " + customers[buyer_time][0] + " " \
+                              + str(refueling_time(customers, buyer_time)) \
+                              + " " + " встал в очередь к автомату №")
+                else:
+                    print("Ушёл", "В " + buyer_time + " новый клиент: " \
+                          + buyer_time + " " + customers[buyer_time][1][:5] \
+                          + " " + customers[buyer_time][0] + " " \
+                          + str(refueling_time(customers, buyer_time)) \
+                          + " " + " встал в очередь к автомату №")
+
+                '''
                 for number in station:
-                    if customers[buyer_time][1] in station[number][2]:
+                    if customers[buyer_time][1] in station[number][2] and len(station[number][3]) != station[number][1]:
+                        new_customer = "В " + buyer_time + " новый клиент: "\
+                                       + buyer_time + " " + customers[buyer_time][1]\
+                                       + " " + customers[buyer_time][0] + " "\
+                                       + str(refueling_time(customers, buyer_time))\
+                                       + " " + " встал в очередь к автомату №" + number
 
 
-                        station[number][3] += "*" # временная строка (до функции "отсева")
+
+                        busy(station, number, new_customer)
+
+                        break
+                '''
 
 
+'''
                         print("В " + buyer_time + " новый клиент: " + buyer_time + " " +
                               customers[buyer_time][1] + " " + customers[buyer_time][0] +
                               " " + str(refueling_time(customers, buyer_time)) + " " +
                               " встал в очередь к автомату №" + number)
                         presentation_station(station)
                         break
-
+'''
 
 gas_station()
